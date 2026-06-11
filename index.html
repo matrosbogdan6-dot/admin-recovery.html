@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pronosticuri CM 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0C0F1A; --surface:#151A2B; --surface2:#1C2238; --line:#2A3147;
+    --text:#EDF0F7; --muted:#8B93A7; --faint:#5B6378;
+    --pink:#FF3D7F; --teal:#2BD9C4; --amber:#FFB23E; --good:#3FCF8E; --bad:#FF5D5D;
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(255,61,127,.10), transparent 60%),
+      radial-gradient(1000px 500px at -10% 10%, rgba(43,217,196,.08), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:20px 16px 80px}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .brandmark{
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:13px;letter-spacing:.04em;
+    background:linear-gradient(95deg,var(--pink),var(--amber) 55%,var(--teal));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  button{font-family:inherit;cursor:pointer}
+  input{font-family:inherit}
+
+  /* ---------- AUTH ---------- */
+  .auth-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .auth-card{width:100%;max-width:400px}
+  .auth-hero{text-align:center;margin-bottom:26px}
+  .ball{font-size:40px;filter:drop-shadow(0 6px 18px rgba(255,61,127,.35))}
+  .auth-title{
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:34px;line-height:1.02;
+    margin:10px 0 6px;letter-spacing:-.02em;
+  }
+  .auth-title span{
+    background:linear-gradient(95deg,var(--pink),var(--amber) 55%,var(--teal));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .auth-sub{color:var(--muted);font-size:13.5px}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+  .tabs{display:flex;gap:6px;background:var(--surface2);padding:5px;border-radius:11px;margin-bottom:20px}
+  .tabs button{
+    flex:1;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:13.5px;
+    padding:9px;border-radius:8px;transition:.15s
+  }
+  .tabs button.active{background:var(--surface);color:var(--text);box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 4px 12px rgba(0,0,0,.3)}
+  label.fld{display:block;margin-bottom:14px}
+  label.fld .lab{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600;letter-spacing:.02em}
+  .ipt{
+    width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;
+    color:var(--text);padding:12px 13px;font-size:15px;transition:.15s
+  }
+  .ipt:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(43,217,196,.16)}
+  .btn-primary{
+    width:100%;border:0;border-radius:10px;padding:13px;font-weight:700;font-size:15px;color:#0C0F1A;
+    background:linear-gradient(95deg,var(--pink),var(--amber));transition:.15s;letter-spacing:.01em
+  }
+  .btn-primary:hover{filter:brightness(1.06)}
+  .btn-primary:disabled{opacity:.55;cursor:not-allowed}
+  .msg{font-size:13px;margin-top:12px;min-height:18px}
+  .msg.err{color:var(--bad)} .msg.ok{color:var(--good)}
+  .auth-foot{text-align:center;margin-top:18px;font-size:11.5px;color:var(--faint);line-height:1.6}
+
+  /* ---------- APP ---------- */
+  header.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+  .bar-l{display:flex;align-items:center;gap:11px;min-width:0}
+  .bar-ball{font-size:26px}
+  .bar-name{font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.01em;line-height:1}
+  .bar-sub{font-size:11px;color:var(--muted);margin-top:3px}
+  .who{display:flex;align-items:center;gap:9px;font-size:13px}
+  .chip-user{background:var(--surface2);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-weight:600;display:flex;align-items:center;gap:7px}
+  .adm-dot{font-size:10px;color:var(--amber);font-weight:700;letter-spacing:.08em}
+  .logout{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:99px;padding:7px 12px;font-size:12.5px;font-weight:600}
+  .logout:hover{color:var(--text);border-color:var(--faint)}
+
+  nav.nav{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);padding:5px;border-radius:12px;margin-bottom:18px;overflow-x:auto}
+  nav.nav button{
+    border:0;background:transparent;color:var(--muted);font-weight:600;font-size:13.5px;
+    padding:9px 14px;border-radius:8px;white-space:nowrap;transition:.15s
+  }
+  nav.nav button.active{background:var(--surface2);color:var(--text)}
+  .badge-n{background:var(--pink);color:#0C0F1A;font-size:10px;font-weight:800;border-radius:99px;padding:1px 6px;margin-left:6px}
+
+  .banner{background:rgba(255,178,62,.10);border:1px solid rgba(255,178,62,.3);color:#ffd99a;border-radius:10px;padding:10px 13px;font-size:12.5px;margin-bottom:16px}
+
+  /* filter row */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  .sel{background:var(--surface);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:9px 11px;font-size:13px;font-weight:600}
+  .sel:focus{outline:none;border-color:var(--teal)}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);font-weight:600;cursor:pointer;user-select:none}
+  .toggle input{accent-color:var(--teal);width:16px;height:16px}
+  .stat-line{margin-left:auto;font-size:12.5px;color:var(--muted)}
+  .stat-line b{color:var(--text)}
+
+  .daygroup{margin-bottom:22px}
+  .dayhdr{display:flex;align-items:center;gap:10px;margin:0 2px 12px}
+  .dayhdr h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;margin:0;letter-spacing:.01em;text-transform:capitalize}
+  .dayhdr .rule{flex:1;height:1px;background:var(--line)}
+
+  .match{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:14px 14px 13px;margin-bottom:11px;transition:border-color .15s, transform .15s
+  }
+  .match:hover{border-color:#343c54}
+  .match.next{border-color:rgba(43,217,196,.45);box-shadow:0 0 0 1px rgba(43,217,196,.2)}
+  .m-top{display:flex;align-items:center;gap:8px;margin-bottom:11px}
+  .tag{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface2);border:1px solid var(--line);padding:3px 7px;border-radius:6px}
+  .tag.grp{color:var(--teal);border-color:rgba(43,217,196,.25)}
+  .tag.ko{color:var(--amber);border-color:rgba(255,178,62,.30)}
+  .tname.slot{font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;color:var(--muted);white-space:normal;line-height:1.25}
+  .tag.next{color:#0C0F1A;background:var(--teal);border-color:var(--teal)}
+  .tag.closed{color:var(--faint)}
+  .m-time{margin-left:auto;font-size:12px;color:var(--muted);font-weight:600}
+
+  .m-core{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+  .team{display:flex;align-items:center;gap:9px;min-width:0}
+  .team.away{flex-direction:row-reverse;text-align:right}
+  .flag{font-size:23px;line-height:1;flex-shrink:0}
+  .tname{font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .score-box{display:flex;align-items:center;gap:7px}
+  .score-in{
+    width:46px;height:50px;text-align:center;background:#090C14;border:1px solid var(--line);
+    border-radius:10px;color:var(--text);font-family:'Space Mono',monospace;font-size:24px;font-weight:700;
+    transition:.15s; padding:0
+  }
+  .score-in:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,178,62,.18)}
+  .score-in:disabled{color:var(--muted);background:#0b0e16}
+  .colon{font-family:'Space Mono',monospace;font-size:22px;color:var(--faint);font-weight:700}
+
+  .m-foot{display:flex;align-items:center;gap:10px;margin-top:12px}
+  .save{
+    border:0;border-radius:9px;padding:9px 16px;font-weight:700;font-size:13px;color:#0C0F1A;
+    background:linear-gradient(95deg,var(--pink),var(--amber));transition:.15s
+  }
+  .save:hover{filter:brightness(1.06)}
+  .save:disabled{opacity:.5;cursor:not-allowed}
+  .save.saved{background:var(--surface2);color:var(--good);border:1px solid rgba(63,207,142,.3)}
+  .m-state{font-size:12px;color:var(--muted);font-weight:600}
+  .m-state .closed{color:var(--faint)}
+  .official{margin-left:auto;font-size:12px;font-weight:700;color:var(--text)}
+  .official .pts{font-size:11px;font-weight:700;margin-left:8px;padding:2px 8px;border-radius:99px}
+  .pts.p3{background:rgba(63,207,142,.16);color:var(--good)}
+  .pts.p1{background:rgba(255,178,62,.16);color:var(--amber)}
+  .pts.p0{background:rgba(255,93,93,.14);color:var(--bad)}
+
+  /* reveal */
+  .reveal{margin-top:12px;border-top:1px dashed var(--line);padding-top:11px;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .reveal .rh{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:9px}
+  .pred-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 0;font-size:13.5px}
+  .pred-row .u{color:var(--text);font-weight:600;display:flex;align-items:center;gap:7px}
+  .pred-row .s{font-family:'Space Mono',monospace;font-weight:700;font-size:15px;color:var(--text)}
+  .pred-empty{font-size:12.5px;color:var(--faint)}
+  .locked-note{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:11px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--faint)}
+
+  /* leaderboard */
+  .lb{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .lb table{width:100%;border-collapse:collapse}
+  .lb th{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:right;padding:13px 12px;font-weight:700;border-bottom:1px solid var(--line)}
+  .lb th.l,.lb td.l{text-align:left}
+  .lb td{padding:13px 12px;font-size:14px;border-bottom:1px solid var(--line)}
+  .lb tr:last-child td{border-bottom:0}
+  .lb .rank{font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;width:34px}
+  .lb .rank.r1{color:var(--amber)} .lb .rank.r2{color:#cfd6e4} .lb .rank.r3{color:#d8a06a}
+  .lb .pname{font-weight:700;font-family:'Archivo',sans-serif}
+  .lb .me{color:var(--teal)}
+  .lb .total{font-family:'Space Mono',monospace;font-weight:700;font-size:16px}
+  .lb .sub{color:var(--muted);font-family:'Space Mono',monospace;font-size:13px}
+
+  .empty{background:var(--surface);border:1px dashed var(--line);border-radius:var(--r);padding:34px 22px;text-align:center;color:var(--muted)}
+  .empty .big{font-size:30px;margin-bottom:10px}
+  .empty h4{font-family:'Archivo',sans-serif;color:var(--text);margin:0 0 6px;font-size:17px}
+  .empty p{margin:0;font-size:13.5px}
+
+  /* rules */
+  .doc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+  .doc h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
+  .doc .lead{color:var(--muted);font-size:14px;margin:0 0 22px}
+  .rule-item{display:flex;gap:14px;padding:15px 0;border-top:1px solid var(--line)}
+  .rule-item .n{font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;color:var(--teal);flex-shrink:0;width:24px}
+  .rule-item .b{font-size:14px}
+  .rule-item .b strong{font-family:'Archivo',sans-serif}
+  .scorebox{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .scorebox .c{flex:1;min-width:120px;background:var(--surface2);border:1px solid var(--line);border-radius:11px;padding:14px}
+  .scorebox .pp{font-family:'Archivo',sans-serif;font-weight:900;font-size:26px}
+  .scorebox .c.g .pp{color:var(--good)} .scorebox .c.a .pp{color:var(--amber)} .scorebox .c.b .pp{color:var(--bad)}
+  .scorebox .dd{font-size:12.5px;color:var(--muted);margin-top:3px}
+
+  /* admin */
+  .adm-match{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-bottom:9px}
+  .adm-match .tn{font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;display:flex;align-items:center;gap:7px;min-width:0}
+  .adm-match .tn.away{flex-direction:row-reverse;text-align:right}
+  .adm-match .tn .tname{font-size:13.5px}
+  .adm-in{width:42px;height:42px;text-align:center;background:#090C14;border:1px solid var(--line);border-radius:9px;color:var(--text);font-family:'Space Mono',monospace;font-size:19px;font-weight:700}
+  .adm-in:focus{outline:none;border-color:var(--good);box-shadow:0 0 0 3px rgba(63,207,142,.15)}
+  .adm-save{border:0;background:var(--good);color:#0C0F1A;font-weight:700;border-radius:8px;padding:0 12px;height:42px;font-size:12.5px}
+  .adm-cell{display:flex;align-items:center;gap:6px;justify-content:center}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--text);color:#0C0F1A;font-weight:700;font-size:13.5px;padding:11px 18px;border-radius:99px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .hidden{display:none!important}
+
+  /* knockout admin editor */
+  .ko-edit{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:10px}
+  .ko-edit.done{border-color:rgba(63,207,142,.35)}
+  .ko-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:11px}
+  .ko-date{font-size:12px;color:var(--muted);font-weight:600}
+  .ko-slots{font-size:12px;color:var(--faint);font-weight:600}
+  .ko-slots b{color:var(--muted);font-weight:700}
+  .ko-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .ko-in{flex:1;min-width:120px;background:#090C14;border:1px solid var(--line);border-radius:9px;color:var(--text);padding:10px 11px;font-size:14px;font-weight:600;font-family:'Archivo',sans-serif}
+  .ko-in:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(255,178,62,.15)}
+  .ko-time{width:74px;text-align:center;background:#090C14;border:1px solid var(--line);border-radius:9px;color:var(--text);padding:10px 6px;font-size:14px;font-family:'Space Mono',monospace}
+  .ko-time:focus{outline:none;border-color:var(--amber)}
+
+  @media(max-width:560px){
+    .tname{font-size:13px}
+    .auth-title{font-size:29px}
+    .score-in{width:42px;height:46px;font-size:21px}
+    .m-core{gap:6px}
+    .stat-line{width:100%;margin-left:0;order:5}
+  }
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="authView" class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-hero">
+      <div class="ball">⚽</div>
+      <div class="auth-title">Pronosticuri <span>CM 2026</span></div>
+      <div class="auth-sub">Liga noastră de pronosticuri · SUA · Canada · Mexic</div>
+    </div>
+    <div class="panel">
+      <div class="tabs">
+        <button id="tabLogin" class="active" onclick="setAuthTab('login')">Intră în cont</button>
+        <button id="tabReg" onclick="setAuthTab('reg')">Cont nou</button>
+      </div>
+      <label class="fld"><span class="lab">Utilizator</span>
+        <input id="auUser" class="ipt" autocomplete="username" placeholder="numele tău"></label>
+      <label class="fld"><span class="lab">Parolă</span>
+        <input id="auPass" class="ipt" type="password" autocomplete="current-password" placeholder="••••••••"></label>
+      <button id="auBtn" class="btn-primary" onclick="doAuth()">Intră</button>
+      <div id="auMsg" class="msg"></div>
+    </div>
+    <div class="auth-foot">
+      Primul cont creat devine administrator (poate introduce rezultatele oficiale).<br>
+      Datele se salvează în baza ta Firebase. Folosește o parolă simplă, dedicată jocului — nu o parolă reală.
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appView" class="wrap hidden">
+  <header class="bar">
+    <div class="bar-l">
+      <span class="bar-ball">⚽</span>
+      <div>
+        <div class="bar-name">Pronosticuri <span class="brandmark">CM 2026</span></div>
+        <div class="bar-sub">Faza grupelor · 72 de meciuri</div>
+      </div>
+    </div>
+    <div class="who">
+      <span class="chip-user" id="chipUser"></span>
+      <button class="logout" onclick="logout()">Ieșire</button>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <button id="nvMatches" class="active" onclick="go('matches')">Meciuri</button>
+    <button id="nvBoard" onclick="go('board')">Clasament</button>
+    <button id="nvRules" onclick="go('rules')">Regulament</button>
+    <button id="nvAdmin" class="hidden" onclick="go('admin')">Rezultate oficiale</button>
+  </nav>
+
+  <div id="syncBanner" class="banner hidden"></div>
+
+  <section id="pgMatches"></section>
+  <section id="pgBoard" class="hidden"></section>
+  <section id="pgRules" class="hidden"></section>
+  <section id="pgAdmin" class="hidden"></section>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/12.14.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore-compat.js"></script>
+<script>
+/* ===================== DATA ===================== */
+const FLAGS = {
+  "Mexic":"🇲🇽","Africa de Sud":"🇿🇦","Coreea de Sud":"🇰🇷","Cehia":"🇨🇿","Canada":"🇨🇦",
+  "Bosnia":"🇧🇦","Qatar":"🇶🇦","Elveția":"🇨🇭","Brazilia":"🇧🇷","Maroc":"🇲🇦","Haiti":"🇭🇹",
+  "Scoția":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","SUA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Turcia":"🇹🇷","Germania":"🇩🇪",
+  "Curaçao":"🇨🇼","Coasta de Fildeș":"🇨🇮","Ecuador":"🇪🇨","Olanda":"🇳🇱","Japonia":"🇯🇵","Suedia":"🇸🇪",
+  "Tunisia":"🇹🇳","Belgia":"🇧🇪","Egipt":"🇪🇬","Iran":"🇮🇷","Noua Zeelandă":"🇳🇿","Spania":"🇪🇸",
+  "Capul Verde":"🇨🇻","Arabia Saudită":"🇸🇦","Uruguay":"🇺🇾","Franța":"🇫🇷","Senegal":"🇸🇳","Irak":"🇮🇶",
+  "Norvegia":"🇳🇴","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Iordania":"🇯🇴","Portugalia":"🇵🇹",
+  "RD Congo":"🇨🇩","Uzbekistan":"🇺🇿","Columbia":"🇨🇴","Anglia":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croația":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"
+};
+const RAW = [
+  ["A",11,"22:00","Mexic","Africa de Sud"],["A",12,"05:00","Coreea de Sud","Cehia"],
+  ["A",18,"19:00","Cehia","Africa de Sud"],["A",19,"04:00","Mexic","Coreea de Sud"],
+  ["A",25,"04:00","Cehia","Mexic"],["A",24,"04:00","Africa de Sud","Coreea de Sud"],
+  ["B",12,"22:00","Canada","Bosnia"],["B",13,"22:00","Qatar","Elveția"],
+  ["B",18,"22:00","Elveția","Bosnia"],["B",19,"01:00","Canada","Qatar"],
+  ["B",24,"22:00","Elveția","Canada"],["B",24,"22:00","Bosnia","Qatar"],
+  ["C",14,"01:00","Brazilia","Maroc"],["C",14,"04:00","Haiti","Scoția"],
+  ["C",20,"01:00","Scoția","Maroc"],["C",20,"04:00","Brazilia","Haiti"],
+  ["C",25,"01:00","Scoția","Brazilia"],["C",25,"01:00","Maroc","Haiti"],
+  ["D",13,"04:00","SUA","Paraguay"],["D",13,"07:00","Australia","Turcia"],
+  ["D",19,"07:00","Turcia","Paraguay"],["D",19,"22:00","SUA","Australia"],
+  ["D",26,"05:00","Turcia","SUA"],["D",26,"05:00","Paraguay","Australia"],
+  ["E",14,"20:00","Germania","Curaçao"],["E",15,"02:00","Coasta de Fildeș","Ecuador"],
+  ["E",20,"23:00","Germania","Coasta de Fildeș"],["E",21,"03:00","Ecuador","Curaçao"],
+  ["E",26,"01:00","Ecuador","Germania"],["E",26,"01:00","Curaçao","Coasta de Fildeș"],
+  ["F",14,"23:00","Olanda","Japonia"],["F",15,"05:00","Suedia","Tunisia"],
+  ["F",20,"20:00","Olanda","Suedia"],["F",20,"07:00","Tunisia","Japonia"],
+  ["F",26,"02:00","Japonia","Suedia"],["F",25,"02:00","Tunisia","Olanda"],
+  ["G",15,"22:00","Belgia","Egipt"],["G",16,"04:00","Iran","Noua Zeelandă"],
+  ["G",21,"22:00","Belgia","Iran"],["G",22,"04:00","Noua Zeelandă","Egipt"],
+  ["G",27,"06:00","Egipt","Iran"],["G",27,"06:00","Noua Zeelandă","Belgia"],
+  ["H",15,"19:00","Spania","Capul Verde"],["H",16,"01:00","Arabia Saudită","Uruguay"],
+  ["H",21,"19:00","Spania","Arabia Saudită"],["H",22,"01:00","Uruguay","Capul Verde"],
+  ["H",27,"03:00","Capul Verde","Arabia Saudită"],["H",27,"03:00","Uruguay","Spania"],
+  ["I",16,"22:00","Franța","Senegal"],["I",17,"01:00","Irak","Norvegia"],
+  ["I",23,"00:00","Franța","Irak"],["I",23,"03:00","Norvegia","Senegal"],
+  ["I",26,"22:00","Norvegia","Franța"],["I",26,"22:00","Senegal","Irak"],
+  ["J",16,"07:00","Austria","Iordania"],["J",17,"04:00","Argentina","Algeria"],
+  ["J",22,"20:00","Argentina","Austria"],["J",23,"06:00","Iordania","Algeria"],
+  ["J",28,"05:00","Algeria","Austria"],["J",28,"05:00","Iordania","Argentina"],
+  ["K",17,"20:00","Portugalia","RD Congo"],["K",18,"05:00","Uzbekistan","Columbia"],
+  ["K",23,"20:00","Portugalia","Uzbekistan"],["K",24,"05:00","Columbia","RD Congo"],
+  ["K",28,"02:30","Columbia","Portugalia"],["K",28,"02:30","RD Congo","Uzbekistan"],
+  ["L",17,"23:00","Anglia","Croația"],["L",18,"02:00","Ghana","Panama"],
+  ["L",23,"23:00","Anglia","Ghana"],["L",24,"02:00","Panama","Croația"],
+  ["L",28,"00:00","Panama","Anglia"],["L",28,"00:00","Croația","Ghana"]
+];
+const WD = ["Duminică","Luni","Marți","Miercuri","Joi","Vineri","Sâmbătă"];
+const MON = {6:"iunie",7:"iulie"};
+function pad(n){return String(n).padStart(2,"0");}
+function isoToTs(d,mon,t){return new Date(`2026-${pad(mon)}-${pad(d)}T${t}:00+03:00`).getTime();}
+
+const GROUP_MATCHES = RAW.map((r,i)=>{
+  const [g,d,t,h,a]=r;
+  const id="m"+pad(i+1);
+  return {id,phase:"group",g,d,mon:6,t,h,a,ko:isoToTs(d,6,t)};
+});
+
+/* Tabloul fazelor eliminatorii (M73–M104). Echipele se completează din pagina de admin.
+   slotH/slotA = descrierea slotului până se cunoaște echipa. ora implicită 22:00, editabilă de admin. */
+const KO_RAW = [
+  ["m73",28,6,"Șaisprezecimi","Locul 2 Grupa A","Locul 2 Grupa B"],
+  ["m74",28,6,"Șaisprezecimi","Locul 1 Grupa E","Cea mai bună de pe locul 3 (A/B/C/D/F)"],
+  ["m75",29,6,"Șaisprezecimi","Locul 1 Grupa F","Locul 2 Grupa C"],
+  ["m76",29,6,"Șaisprezecimi","Locul 1 Grupa C","Locul 2 Grupa F"],
+  ["m77",30,6,"Șaisprezecimi","Locul 1 Grupa I","Cea mai bună de pe locul 3 (C/D/F/G/H)"],
+  ["m78",30,6,"Șaisprezecimi","Locul 2 Grupa E","Locul 2 Grupa I"],
+  ["m79",30,6,"Șaisprezecimi","Locul 1 Grupa A","Cea mai bună de pe locul 3 (C/E/F/H/I)"],
+  ["m80",1,7,"Șaisprezecimi","Locul 1 Grupa L","Cea mai bună de pe locul 3 (E/H/I/J/K)"],
+  ["m81",1,7,"Șaisprezecimi","Locul 1 Grupa D","Cea mai bună de pe locul 3 (B/E/F/I/J)"],
+  ["m82",1,7,"Șaisprezecimi","Locul 1 Grupa G","Cea mai bună de pe locul 3 (A/E/H/I/J)"],
+  ["m83",2,7,"Șaisprezecimi","Locul 2 Grupa K","Locul 2 Grupa L"],
+  ["m84",2,7,"Șaisprezecimi","Locul 1 Grupa H","Locul 2 Grupa J"],
+  ["m85",2,7,"Șaisprezecimi","Locul 1 Grupa B","Cea mai bună de pe locul 3 (E/F/G/I/J)"],
+  ["m86",3,7,"Șaisprezecimi","Locul 1 Grupa J","Locul 2 Grupa H"],
+  ["m87",3,7,"Șaisprezecimi","Locul 1 Grupa K","Cea mai bună de pe locul 3 (D/E/I/J/L)"],
+  ["m88",3,7,"Șaisprezecimi","Locul 2 Grupa D","Locul 2 Grupa G"],
+  ["m89",4,7,"Optimi","Câștigătoare M74","Câștigătoare M77"],
+  ["m90",4,7,"Optimi","Câștigătoare M73","Câștigătoare M75"],
+  ["m91",5,7,"Optimi","Câștigătoare M76","Câștigătoare M78"],
+  ["m92",5,7,"Optimi","Câștigătoare M79","Câștigătoare M80"],
+  ["m93",6,7,"Optimi","Câștigătoare M83","Câștigătoare M84"],
+  ["m94",6,7,"Optimi","Câștigătoare M81","Câștigătoare M82"],
+  ["m95",7,7,"Optimi","Câștigătoare M86","Câștigătoare M88"],
+  ["m96",7,7,"Optimi","Câștigătoare M85","Câștigătoare M87"],
+  ["m97",9,7,"Sferturi","Câștigătoare M89","Câștigătoare M90"],
+  ["m98",10,7,"Sferturi","Câștigătoare M93","Câștigătoare M94"],
+  ["m99",11,7,"Sferturi","Câștigătoare M91","Câștigătoare M92"],
+  ["m100",11,7,"Sferturi","Câștigătoare M95","Câștigătoare M96"],
+  ["m101",14,7,"Semifinale","Câștigătoare M97","Câștigătoare M98"],
+  ["m102",15,7,"Semifinale","Câștigătoare M99","Câștigătoare M100"],
+  ["m103",18,7,"Finala mică","Învinsă M101","Învinsă M102"],
+  ["m104",19,7,"Finală","Câștigătoare M101","Câștigătoare M102"]
+];
+const KO_MATCHES = KO_RAW.map(r=>{
+  const [id,d,mon,round,slotH,slotA]=r;
+  return {id,phase:"ko",d,mon,round,slotH,slotA,t:"22:00",ko:isoToTs(d,mon,"22:00")};
+});
+
+const MATCHES = GROUP_MATCHES.concat(KO_MATCHES).sort((x,y)=>x.ko-y.ko);
+const TEAM_LIST = Object.keys(FLAGS);
+
+/* ============================================================
+   CONFIGURARE FIREBASE
+   Înlocuiește valorile de mai jos cu cele din proiectul tău
+   (Firebase Console → Project settings → "Your apps" → Web app → SDK setup → Config).
+   ============================================================ */
+const firebaseConfig = {
+  apiKey:            "AIzaSyAQg7Y-9GHXXdXU91w4SgEKYjyJlzpHQlY",
+  authDomain:        "fotbal-4d150.firebaseapp.com",
+  projectId:         "fotbal-4d150",
+  storageBucket:     "fotbal-4d150.firebasestorage.app",
+  messagingSenderId: "498970433293",
+  appId:             "1:498970433293:web:a771e19fb5b30eb224c244"
+};
+/* ============================================================ */
+
+let db=null, FB_OK=false;
+function configReady(){return firebaseConfig.apiKey && firebaseConfig.apiKey.indexOf("PUNE_AICI")===-1;}
+function keyToRef(key){
+  if(key==="meta")    return db.collection("app").doc("meta");
+  if(key==="results") return db.collection("app").doc("results");
+  if(key==="rules")   return db.collection("app").doc("rules");
+  if(key==="ko")      return db.collection("app").doc("ko");
+  if(key.indexOf("user:")===0) return db.collection("users").doc(key.slice(5));
+  if(key.indexOf("pred:")===0) return db.collection("preds").doc(key.slice(5));
+  throw new Error("cheie necunoscută: "+key);
+}
+async function sGet(key){
+  try{const s=await keyToRef(key).get();return s.exists?s.data():null;}
+  catch(e){console.error("sGet",key,e);return null;}
+}
+async function sSet(key,val){
+  try{await keyToRef(key).set(val);}
+  catch(e){console.error("sSet",key,e);throw e;}
+}
+async function sList(prefix){
+  try{
+    const coll = prefix==="user:"?"users" : prefix==="pred:"?"preds" : null;
+    if(!coll)return [];
+    const qs=await db.collection(coll).get();
+    const out=[];qs.forEach(d=>out.push(prefix+d.id));return out;
+  }catch(e){console.error("sList",prefix,e);return [];}
+}
+async function sha(txt){
+  if(window.crypto&&window.crypto.subtle){
+    const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(txt));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  }
+  let h=0;for(let i=0;i<txt.length;i++){h=(h<<5)-h+txt.charCodeAt(i);h|=0;}return "x"+h;
+}
+
+/* ===================== STATE ===================== */
+let ME=null;          // username
+let ADMIN=null;       // admin username
+let MYPRED={};        // {matchId:{h,a}}
+let FILTER_GROUP="all";
+let HIDE_CLOSED=false;
+let ADMIN_TAB="results";
+let RULES_CACHE="";
+const DEFAULT_RULES =
+`1. Cont propriu. Fiecare participant își creează un cont cu utilizator și parolă. Un singur cont de persoană — fair-play.
+
+2. Pune scorul și trimite-l. Pentru fiecare meci alegi un scor (ex. 2–1) și apeși „Trimite pronosticul”. Atenție: odată trimis, pronosticul se blochează imediat și NU mai poate fi modificat — gândește-te bine înainte. Pronosticurile pot fi trimise doar înainte de începerea meciului.
+
+3. Pronosticurile sunt secrete. Nu vezi scorurile celorlalți la un meci până nu îți trimiți propriul scor la acel meci. După începerea meciului, pronosticurile devin vizibile pentru toți.
+
+4. Rezultate oficiale. Scorurile reale sunt introduse de administrator. Clasamentul se actualizează automat după fiecare meci.
+
+5. Câștigătorul. La finalul turneului, câștigă cine are cele mai multe puncte. La egalitate departajează numărul de scoruri exacte.
+
+6. Notă. Ascunderea pronosticurilor funcționează pe încredere, între prieteni. Folosește o parolă simplă, dedicată jocului, nu o parolă importantă.`;
+
+/* ===================== AUTH ===================== */
+let authMode="login";
+function setAuthTab(m){
+  authMode=m;
+  document.getElementById("tabLogin").classList.toggle("active",m==="login");
+  document.getElementById("tabReg").classList.toggle("active",m==="reg");
+  document.getElementById("auBtn").textContent=m==="login"?"Intră":"Creează cont";
+  document.getElementById("auPass").autocomplete=m==="login"?"current-password":"new-password";
+  document.getElementById("auMsg").textContent="";
+}
+function authMsg(t,ok){const e=document.getElementById("auMsg");e.textContent=t;e.className="msg "+(ok?"ok":"err");}
+function cleanUser(u){
+  return u.trim().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9._-]+/g,"_")
+    .replace(/^_+|_+$/g,"");
+}
+
+async function doAuth(){
+  const rawU=document.getElementById("auUser").value;
+  const p=document.getElementById("auPass").value;
+  const u=cleanUser(rawU);
+  if(!u){authMsg("Scrie un nume de utilizator.");return;}
+  if(p.length<3){authMsg("Parola trebuie să aibă cel puțin 3 caractere.");return;}
+  const btn=document.getElementById("auBtn");btn.disabled=true;
+  try{
+    const ph=await sha(p);
+    const existing=await sGet("user:"+u);
+    if(authMode==="reg"){
+      if(existing){authMsg("Utilizatorul există deja. Alege alt nume sau intră în cont.");return;}
+      await sSet("user:"+u,{name:rawU.trim()||u,pass:ph,joined:Date.now()});
+      const meta=await sGet("meta");
+      if(!meta||!meta.admin){await sSet("meta",{admin:u});}
+      authMsg("Cont creat. Te conectez…",true);
+      await enter(u);
+    }else{
+      if(!existing){authMsg("Nu există acest utilizator. Creează un cont nou.");return;}
+      if(existing.pass!==ph){authMsg("Parolă greșită.");return;}
+      authMsg("Bine ai revenit!",true);
+      await enter(u);
+    }
+  }finally{btn.disabled=false;}
+}
+
+async function enter(u){
+  ME=u;
+  const meta=await sGet("meta");ADMIN=meta?meta.admin:null;
+  MYPRED=(await sGet("pred:"+u))||{};
+  const ud=await sGet("user:"+u);
+  document.getElementById("authView").classList.add("hidden");
+  document.getElementById("appView").classList.remove("hidden");
+  const chip=document.getElementById("chipUser");
+  chip.innerHTML=`👤 ${esc(ud?ud.name:u)}`+(ME===ADMIN?` <span class="adm-dot">ADMIN</span>`:"");
+  document.getElementById("nvAdmin").classList.toggle("hidden",ME!==ADMIN);
+  go("matches");
+}
+function logout(){ME=null;MYPRED={};document.getElementById("appView").classList.add("hidden");document.getElementById("authView").classList.remove("hidden");document.getElementById("auPass").value="";}
+
+/* ===================== NAV ===================== */
+function go(p){
+  ["matches","board","rules","admin"].forEach(x=>{
+    document.getElementById("pg"+cap(x)).classList.toggle("hidden",x!==p);
+    const nv=document.getElementById("nv"+({matches:"Matches",board:"Board",rules:"Rules",admin:"Admin"})[x]);
+    if(nv)nv.classList.toggle("active",x===p);
+  });
+  if(p==="matches")renderMatches();
+  if(p==="board")renderBoard();
+  if(p==="rules")renderRules();
+  if(p==="admin")renderAdmin();
+}
+
+/* ===================== HELPERS ===================== */
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function flag(t){return FLAGS[t]||"🏳️";}
+function dateLabel(d,mon){const dt=new Date(`2026-${pad(mon)}-${pad(d)}T12:00:00+03:00`);return `${WD[dt.getDay()]}, ${d} ${MON[mon]}`;}
+function scoreOutcome(h,a){return h>a?"1":(h<a?"2":"X");}
+function pointsFor(pred,res){
+  if(!pred||!res)return null;
+  if(pred.h===res.h&&pred.a===res.a)return 3;
+  if(scoreOutcome(pred.h,pred.a)===scoreOutcome(res.h,res.a))return 1;
+  return 0;
+}
+/* rezolvă o echipă/oră reală pentru meciurile eliminatorii, în funcție de ce a completat adminul */
+function resolveMatch(m,koMap){
+  if(m.phase==="group"){
+    return {h:m.h,a:m.a,resolved:true,ko:m.ko,time:m.t,phase:"group",label:"Grupa "+m.g};
+  }
+  const o=(koMap&&koMap[m.id])||{};
+  const h=(o.home&&o.home.trim())?o.home.trim():null;
+  const a=(o.away&&o.away.trim())?o.away.trim():null;
+  const time=(o.time&&o.time.trim())?o.time.trim():m.t;
+  return {h,a,hLabel:m.slotH,aLabel:m.slotA,resolved:!!(h&&a),ko:isoToTs(m.d,m.mon,time),time,phase:"ko",label:m.round};
+}
+function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),1800);}
+
+/* ===================== MATCHES PAGE ===================== */
+async function renderMatches(){
+  const root=document.getElementById("pgMatches");
+  const results=(await sGet("results"))||{};
+  const koMap=(await sGet("ko"))||{};
+  const predKeys=await sList("pred:");
+  const allPreds={};
+  const userNames={};
+  for(const k of predKeys){const usr=k.slice(5);allPreds[usr]=(await sGet(k))||{};}
+  const userKeys=await sList("user:");
+  for(const k of userKeys){const usr=k.slice(5);const ud=await sGet(k);userNames[usr]=ud?ud.name:usr;}
+
+  let list=MATCHES.filter(m=>{
+    if(FILTER_GROUP==="all")return true;
+    if(FILTER_GROUP==="groups")return m.phase==="group";
+    if(FILTER_GROUP==="ko")return m.phase==="ko";
+    return m.phase==="group"&&m.g===FILTER_GROUP;
+  });
+  const now=Date.now();
+  if(HIDE_CLOSED)list=list.filter(m=>now<resolveMatch(m,koMap).ko);
+  // următorul meci = primul deschis cu echipe cunoscute
+  const nextOpen=MATCHES.map(m=>({m,R:resolveMatch(m,koMap)}))
+    .filter(o=>o.R.resolved&&now<o.R.ko).sort((a,b)=>a.R.ko-b.R.ko)[0];
+  const nextId=nextOpen?nextOpen.m.id:null;
+  const totalDone=Object.keys(MYPRED).length;
+
+  let opts=`<option value="all" ${FILTER_GROUP==="all"?"selected":""}>Toate meciurile</option>
+    <option value="groups" ${FILTER_GROUP==="groups"?"selected":""}>Faza grupelor</option>
+    <option value="ko" ${FILTER_GROUP==="ko"?"selected":""}>Faze eliminatorii</option>`;
+  ["A","B","C","D","E","F","G","H","I","J","K","L"].forEach(g=>{
+    opts+=`<option value="${g}" ${g===FILTER_GROUP?"selected":""}>Grupa ${g}</option>`;
+  });
+  let html=`<div class="filters">
+    <select class="sel" onchange="FILTER_GROUP=this.value;renderMatches()">${opts}</select>
+    <label class="toggle"><input type="checkbox" ${HIDE_CLOSED?"checked":""} onchange="HIDE_CLOSED=this.checked;renderMatches()"> Ascunde meciurile închise</label>
+    <span class="stat-line">Pronosticuri trimise: <b>${totalDone}</b></span>
+  </div>`;
+
+  const byDay={};
+  list.forEach(m=>{const key=m.mon*100+m.d;(byDay[key]=byDay[key]||[]).push(m);});
+  const keys=Object.keys(byDay).map(Number).sort((a,b)=>a-b);
+  if(keys.length===0){
+    html+=`<div class="empty"><div class="big">🔎</div><h4>Niciun meci de afișat</h4><p>Schimbă filtrul ca să vezi meciurile.</p></div>`;
+  }
+  for(const key of keys){
+    const sample=byDay[key][0];
+    html+=`<div class="daygroup"><div class="dayhdr"><h3>${dateLabel(sample.d,sample.mon)}</h3><div class="rule"></div></div>`;
+    byDay[key].sort((a,b)=>resolveMatch(a,koMap).ko-resolveMatch(b,koMap).ko).forEach(m=>{
+      html+=matchCard(m,m.id===nextId,results,allPreds,userNames,resolveMatch(m,koMap));
+    });
+    html+=`</div>`;
+  }
+  root.innerHTML=html;
+}
+
+function matchCard(m,isNext,results,allPreds,userNames,R){
+  const now=Date.now();
+  const closed=now>=R.ko;
+  const known=R.resolved;
+  const mine=MYPRED[m.id];
+  const res=results[m.id];
+  const myH=mine?mine.h:"";
+  const myA=mine?mine.a:"";
+
+  // eticheta fazei
+  const phaseTag = m.phase==="group"
+    ? `<span class="tag grp">Grupa ${m.g}</span>`
+    : `<span class="tag ko">${esc(m.round)}</span>`;
+
+  let topTag = !known ? `<span class="tag closed">În așteptare</span>`
+             : isNext ? `<span class="tag next">Urmează</span>`
+             : closed ? `<span class="tag closed">Închis</span>`
+             : `<span class="tag">Deschis</span>`;
+
+  // echipele afișate
+  const homeCell = known
+    ? `<span class="flag">${flag(R.h)}</span><span class="tname">${esc(R.h)}</span>`
+    : `<span class="tname slot">${esc(R.hLabel)}</span>`;
+  const awayCell = known
+    ? `<span class="flag">${flag(R.a)}</span><span class="tname">${esc(R.a)}</span>`
+    : `<span class="tname slot">${esc(R.aLabel)}</span>`;
+
+  const dis=(!known||closed||mine)?"disabled":"";
+  const revealed = known && (!!mine || closed);
+
+  let foot, reveal;
+  if(!known){
+    foot=`<div class="m-foot"><span class="m-state"><span class="closed">⏳ Echipe încă necunoscute — se stabilesc după faza grupelor</span></span></div>`;
+    reveal="";
+  }else if(closed){
+    foot=`<div class="m-foot">
+      <span class="m-state"><span class="closed">🔒 Meci închis — pronosticurile sunt blocate</span></span>
+      ${res?officialChip(m,res,mine):""}
+    </div>`;
+    reveal=revealBlock(m,allPreds,userNames,res);
+  }else if(mine){
+    foot=`<div class="m-foot">
+      <span class="m-state"><b>🔒 Pronostic trimis: ${mine.h}–${mine.a}</b> · nu mai poate fi modificat</span>
+      ${res?officialChip(m,res,mine):""}
+    </div>`;
+    reveal=revealBlock(m,allPreds,userNames,res);
+  }else{
+    foot=`<div class="m-foot">
+      <button class="save" id="sv_${m.id}" onclick="savePred('${m.id}')">Trimite pronosticul</button>
+      <span class="m-state">⚠️ După trimitere nu mai poate fi modificat.</span>
+    </div>`;
+    reveal=`<div class="locked-note">🙈 Pronosticurile celorlalți sunt ascunse până trimiți propriul scor.</div>`;
+  }
+
+  return `<div class="match ${isNext?"next":""}">
+    <div class="m-top">
+      ${phaseTag}
+      ${topTag}
+      <span class="m-time">⏱ ${R.time}</span>
+    </div>
+    <div class="m-core">
+      <div class="team home">${homeCell}</div>
+      <div class="score-box">
+        <input class="score-in" id="${m.id}_h" inputmode="numeric" maxlength="2" value="${myH}" ${dis} placeholder="–">
+        <span class="colon">:</span>
+        <input class="score-in" id="${m.id}_a" inputmode="numeric" maxlength="2" value="${myA}" ${dis} placeholder="–">
+      </div>
+      <div class="team away">${awayCell}</div>
+    </div>
+    ${foot}
+    ${reveal}
+  </div>`;
+}
+
+function officialChip(m,res,mine){
+  let chip="";
+  if(mine){
+    const p=pointsFor(mine,res);
+    chip=`<span class="pts p${p}">${p} ${p===1?"punct":"puncte"}</span>`;
+  }
+  return `<span class="official">Oficial: ${res.h}–${res.a}${chip}</span>`;
+}
+
+function revealBlock(m,allPreds,userNames,res){
+  const rows=[];
+  Object.keys(allPreds).sort().forEach(usr=>{
+    const p=allPreds[usr][m.id];
+    if(!p)return;
+    const isMe=usr===ME;
+    let pts="";
+    if(res){const v=pointsFor(p,res);pts=` <span class="pts p${v}">${v}p</span>`;}
+    rows.push(`<div class="pred-row">
+      <span class="u ${isMe?"me":""}">${isMe?"⭐":"•"} ${esc(userNames[usr]||usr)}${isMe?" (tu)":""}</span>
+      <span class="s">${p.h}–${p.a}${pts}</span>
+    </div>`);
+  });
+  const body=rows.length?rows.join(""):`<div class="pred-empty">Nimeni nu a pus încă scorul la acest meci.</div>`;
+  return `<div class="reveal"><div class="rh">Pronosticurile tuturor</div>${body}</div>`;
+}
+
+async function savePred(id){
+  const m=MATCHES.find(x=>x.id===id);
+  if(MYPRED[id]){toast("Ai trimis deja pronosticul — nu mai poate fi modificat.");renderMatches();return;}
+  const koMap=(await sGet("ko"))||{};
+  const R=resolveMatch(m,koMap);
+  if(!R.resolved){toast("Echipele nu sunt încă stabilite.");return;}
+  if(Date.now()>=R.ko){toast("Meciul s-a închis.");renderMatches();return;}
+  const hv=document.getElementById(id+"_h").value.trim();
+  const av=document.getElementById(id+"_a").value.trim();
+  if(hv===""||av===""||isNaN(hv)||isNaN(av)){toast("Completează ambele scoruri.");return;}
+  const h=Math.max(0,Math.min(99,parseInt(hv,10)));
+  const a=Math.max(0,Math.min(99,parseInt(av,10)));
+  const teams=`${R.h} ${h}–${a} ${R.a}`;
+  if(!confirm(`Trimiți pronosticul ${teams}?\n\nAtenție: după trimitere NU îl mai poți modifica.`))return;
+  // verificare anti-dublură: reîncarcă din Firebase ca să nu suprascrii un pronostic deja trimis pe alt dispozitiv
+  const latest=(await sGet("pred:"+ME))||{};
+  if(latest[id]){MYPRED=latest;toast("Pronostic deja trimis pentru acest meci.");renderMatches();return;}
+  latest[id]={h,a,ts:Date.now()};
+  MYPRED=latest;
+  await sSet("pred:"+ME,MYPRED);
+  toast("Pronostic trimis și blocat ✓");
+  renderMatches();
+}
+
+/* ===================== LEADERBOARD ===================== */
+async function renderBoard(){
+  const root=document.getElementById("pgBoard");
+  const results=(await sGet("results"))||{};
+  const resCount=Object.keys(results).length;
+  const userKeys=await sList("user:");
+  const rows=[];
+  for(const k of userKeys){
+    const usr=k.slice(5);const ud=await sGet(k);
+    const preds=(await sGet("pred:"+usr))||{};
+    let total=0,exact=0,outc=0,played=0;
+    for(const mid in results){
+      const p=preds[mid];if(!p)continue;
+      const v=pointsFor(p,results[mid]);
+      total+=v;played++;
+      if(v===3)exact++;else if(v===1)outc++;
+    }
+    rows.push({usr,name:ud?ud.name:usr,total,exact,outc,played,nPred:Object.keys(preds).length});
+  }
+  rows.sort((a,b)=>b.total-a.total||b.exact-a.exact||b.nPred-a.nPred);
+
+  if(resCount===0){
+    root.innerHTML=`<div class="empty"><div class="big">🏆</div><h4>Clasamentul apare după primele rezultate</h4>
+      <p>Administratorul introduce scorurile oficiale la fiecare meci jucat, iar punctele se calculează automat.</p></div>`;
+    return;
+  }
+  let html=`<div class="lb"><table>
+    <thead><tr><th class="l">#</th><th class="l">Participant</th><th>Exact</th><th>Rezultat</th><th>Jucate</th><th>Puncte</th></tr></thead><tbody>`;
+  rows.forEach((r,i)=>{
+    const rk=i+1;
+    html+=`<tr>
+      <td class="l"><span class="rank ${rk<=3?"r"+rk:""}">${rk}</span></td>
+      <td class="l"><span class="pname ${r.usr===ME?"me":""}">${esc(r.name)}${r.usr===ME?" (tu)":""}</span></td>
+      <td><span class="sub">${r.exact}</span></td>
+      <td><span class="sub">${r.outc}</span></td>
+      <td><span class="sub">${r.played}</span></td>
+      <td><span class="total">${r.total}</span></td>
+    </tr>`;
+  });
+  html+=`</tbody></table></div>
+  <p style="font-size:12.5px;color:var(--muted);margin-top:14px;text-align:center">Scor exact = 3p · rezultat corect (1/X/2) = 1p · greșit = 0p</p>`;
+  root.innerHTML=html;
+}
+
+/* ===================== RULES ===================== */
+async function renderRules(){
+  const root=document.getElementById("pgRules");
+  const saved=await sGet("rules");
+  const text=(saved&&saved.text)?saved.text:DEFAULT_RULES;
+  RULES_CACHE=text;
+  const editBtn=(ME===ADMIN)?`<button class="logout" style="border-color:var(--teal);color:var(--teal)" onclick="editRules()">✎ Editează</button>`:"";
+  root.innerHTML=`
+  <div class="doc">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px">
+      <h2 style="margin:0">Regulament</h2>${editBtn}
+    </div>
+    <p class="lead">Regulile ligii noastre de pronosticuri pentru Campionatul Mondial 2026.</p>
+    <div id="rulesBody">${renderRulesText(text)}</div>
+    <div class="scorebox" style="margin-top:18px">
+      <div class="c g"><div class="pp">3p</div><div class="dd">Scor exact (ex. ai zis 2–1 și a fost 2–1)</div></div>
+      <div class="c a"><div class="pp">1p</div><div class="dd">Rezultat corect (1/X/2), dar scor greșit</div></div>
+      <div class="c b"><div class="pp">0p</div><div class="dd">Rezultat greșit</div></div>
+    </div>
+  </div>`;
+}
+function renderRulesText(t){
+  const blocks=t.split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean);
+  if(!blocks.length)return `<p style="color:var(--muted)">Regulamentul este gol.</p>`;
+  return blocks.map(b=>{
+    const m=b.match(/^(\d+)[.)]\s*([\s\S]*)$/);
+    if(m)return `<div class="rule-item"><div class="n">${m[1]}</div><div class="b">${esc(m[2]).replace(/\n/g,"<br>")}</div></div>`;
+    return `<div class="rule-item"><div class="n">•</div><div class="b">${esc(b).replace(/\n/g,"<br>")}</div></div>`;
+  }).join("");
+}
+function editRules(){
+  if(ME!==ADMIN)return;
+  const body=document.getElementById("rulesBody");
+  body.innerHTML=`
+    <textarea id="rulesTA" style="width:100%;min-height:320px;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:13px;font-size:14px;font-family:inherit;line-height:1.65;resize:vertical">${esc(RULES_CACHE)}</textarea>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="save" onclick="saveRules()">Salvează regulamentul</button>
+      <button class="logout" onclick="renderRules()">Renunță</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px">Lasă un rând gol între reguli. Dacă o regulă începe cu „1.”, „2.” etc., apare numerotată automat; altfel apare cu bulină.</p>`;
+}
+async function saveRules(){
+  if(ME!==ADMIN){toast("Doar administratorul poate edita.");return;}
+  const t=document.getElementById("rulesTA").value;
+  try{await sSet("rules",{text:t,ts:Date.now()});toast("Regulament salvat ✓");}
+  catch(e){toast("Eroare la salvare.");}
+  renderRules();
+}
+
+/* ===================== ADMIN ===================== */
+async function renderAdmin(){
+  const root=document.getElementById("pgAdmin");
+  if(ME!==ADMIN){root.innerHTML=`<div class="empty"><div class="big">🔒</div><h4>Doar pentru administrator</h4></div>`;return;}
+  const results=(await sGet("results"))||{};
+  const koMap=(await sGet("ko"))||{};
+
+  const subnav=`<nav class="nav" style="margin-bottom:16px">
+    <button class="${ADMIN_TAB==="results"?"active":""}" onclick="ADMIN_TAB='results';renderAdmin()">Rezultate oficiale</button>
+    <button class="${ADMIN_TAB==="teams"?"active":""}" onclick="ADMIN_TAB='teams';renderAdmin()">Echipe eliminatorii</button>
+  </nav>`;
+  const datalist=`<datalist id="teamlist">${TEAM_LIST.map(t=>`<option value="${esc(t)}">`).join("")}</datalist>`;
+
+  let html=subnav+datalist;
+
+  if(ADMIN_TAB==="teams"){
+    html+=`<div class="banner">Pe măsură ce se cunosc echipele, completează-le aici (poți folosi sugestiile din listă). Poți ajusta și ora. După ce salvezi, meciul devine disponibil la pronostic pentru toți.</div>`;
+    MATCHES.filter(m=>m.phase==="ko").sort((a,b)=>a.ko-b.ko).forEach(m=>{
+      const o=koMap[m.id]||{};
+      const filled=(o.home&&o.away);
+      html+=`<div class="ko-edit ${filled?"done":""}">
+        <div class="ko-head">
+          <span class="tag ko">${esc(m.round)}</span>
+          <span class="ko-date">${dateLabel(m.d,m.mon)}</span>
+          <span class="ko-slots">${esc(m.slotH)} <b>vs</b> ${esc(m.slotA)}</span>
+        </div>
+        <div class="ko-row">
+          <input class="ko-in" id="ko_${m.id}_h" list="teamlist" placeholder="${esc(m.slotH)}" value="${o.home?esc(o.home):""}">
+          <span class="colon" style="font-size:16px">:</span>
+          <input class="ko-in" id="ko_${m.id}_a" list="teamlist" placeholder="${esc(m.slotA)}" value="${o.away?esc(o.away):""}">
+          <input class="ko-time" id="ko_${m.id}_t" placeholder="oră" value="${o.time?esc(o.time):m.t}">
+          <button class="adm-save" onclick="saveKO('${m.id}')">Salvează</button>
+        </div>
+      </div>`;
+    });
+  }else{
+    html+=`<div class="banner">Introdu scorurile oficiale după fiecare meci. Clasamentul și punctele se calculează automat. (Lasă gol și apasă pentru a șterge un rezultat.)</div>`;
+    [...MATCHES].sort((a,b)=>resolveMatch(a,koMap).ko-resolveMatch(b,koMap).ko).forEach(m=>{
+      const R=resolveMatch(m,koMap);
+      const hName=R.h||R.hLabel||m.h, aName=R.a||R.aLabel||m.a;
+      const r=results[m.id]||{};
+      const done=results[m.id]!==undefined;
+      const tag = m.phase==="group"?`<span class="tag grp" style="margin-right:6px">Grupa ${m.g}</span>`:`<span class="tag ko" style="margin-right:6px">${esc(m.round)}</span>`;
+      html+=`<div class="adm-match">
+        <div class="tn home">${tag}${R.h?`<span class="flag">${flag(R.h)}</span>`:""}<span class="tname">${esc(hName)}</span></div>
+        <div class="adm-cell">
+          <input class="adm-in" id="r_${m.id}_h" inputmode="numeric" maxlength="2" value="${done?r.h:""}" placeholder="–">
+          <span class="colon">:</span>
+          <input class="adm-in" id="r_${m.id}_a" inputmode="numeric" maxlength="2" value="${done?r.a:""}" placeholder="–">
+          <button class="adm-save" onclick="saveResult('${m.id}')">${done?"✓":"OK"}</button>
+        </div>
+        <div class="tn away"><span class="tname">${esc(aName)}</span>${R.a?`<span class="flag">${flag(R.a)}</span>`:""}</div>
+      </div>`;
+    });
+  }
+  root.innerHTML=html;
+}
+async function saveResult(id){
+  const hv=document.getElementById("r_"+id+"_h").value.trim();
+  const av=document.getElementById("r_"+id+"_a").value.trim();
+  const results=(await sGet("results"))||{};
+  if(hv===""&&av===""){delete results[id];await sSet("results",results);toast("Rezultat șters");renderAdmin();return;}
+  if(hv===""||av===""||isNaN(hv)||isNaN(av)){toast("Completează ambele scoruri.");return;}
+  results[id]={h:Math.max(0,parseInt(hv,10)),a:Math.max(0,parseInt(av,10))};
+  await sSet("results",results);
+  toast("Rezultat salvat ✓");
+  renderAdmin();
+}
+async function saveKO(id){
+  const home=document.getElementById("ko_"+id+"_h").value.trim();
+  const away=document.getElementById("ko_"+id+"_a").value.trim();
+  let time=document.getElementById("ko_"+id+"_t").value.trim();
+  if(!/^\d{1,2}:\d{2}$/.test(time)){toast("Ora trebuie să fie de forma 22:00.");return;}
+  if(time.length===4)time="0"+time;
+  const koMap=(await sGet("ko"))||{};
+  if(!home&&!away){delete koMap[id];}
+  else{koMap[id]={home,away,time};}
+  await sSet("ko",koMap);
+  toast("Echipe salvate ✓");
+  renderAdmin();
+}
+
+/* ===================== INIT ===================== */
+(function init(){
+  if(configReady() && typeof firebase!=="undefined"){
+    try{firebase.initializeApp(firebaseConfig);db=firebase.firestore();FB_OK=true;}
+    catch(e){console.error("Firebase init",e);}
+  }
+  if(!FB_OK){
+    const b=document.getElementById("syncBanner");
+    b.classList.remove("hidden");
+    b.style.display="block";
+    b.innerHTML="⚙️ <b>Firebase nu este configurat încă.</b> Deschide fișierul și lipește datele proiectului tău în secțiunea <code>firebaseConfig</code> (vezi instrucțiunile). Până atunci, conturile și pronosticurile nu se pot salva.";
+    // mută bannerul în ecranul de login ca să fie vizibil
+    document.querySelector("#authView .panel").prepend(b);
+    document.getElementById("auBtn").disabled=true;
+  }
+  setInterval(()=>{const v=document.getElementById("pgMatches");if(ME&&v&&!v.classList.contains("hidden"))renderMatches();},60000);
+  document.getElementById("auPass").addEventListener("keydown",e=>{if(e.key==="Enter")doAuth();});
+  document.getElementById("auUser").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("auPass").focus();});
+})();
+</script>
+</body>
+</html>
