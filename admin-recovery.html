@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Recovery - Pronosticuri CM 2026</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #0C0F1A;
+    color: #EDF0F7;
+    padding: 20px;
+    margin: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #151A2B;
+    border: 1px solid #2A3147;
+    border-radius: 14px;
+    padding: 30px;
+  }
+  h1 {
+    text-align: center;
+    margin-top: 0;
+    background: linear-gradient(95deg, #FF3D7F, #FFB23E 55%, #2BD9C4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #2A3147;
+  }
+  .section:last-child {
+    border-bottom: none;
+  }
+  h2 {
+    font-size: 16px;
+    color: #2BD9C4;
+    margin: 0 0 15px 0;
+  }
+  label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #8B93A7;
+    font-weight: 600;
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #090C14;
+    border: 1px solid #2A3147;
+    border-radius: 10px;
+    color: #EDF0F7;
+    font-family: inherit;
+    font-size: 14px;
+  }
+  input:focus {
+    outline: none;
+    border-color: #2BD9C4;
+    box-shadow: 0 0 0 3px rgba(43, 217, 196, 0.16);
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: linear-gradient(95deg, #FF3D7F, #FFB23E);
+    border: none;
+    border-radius: 10px;
+    color: #0C0F1A;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.15s;
+  }
+  button:hover {
+    filter: brightness(1.06);
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .result {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+  }
+  .result.show {
+    display: block;
+  }
+  .result.success {
+    background: rgba(63, 207, 142, 0.16);
+    border: 1px solid rgba(63, 207, 142, 0.3);
+    color: #3FCF8E;
+  }
+  .result.error {
+    background: rgba(255, 93, 93, 0.14);
+    border: 1px solid rgba(255, 93, 93, 0.3);
+    color: #FF5D5D;
+  }
+  .info-box {
+    background: rgba(255, 178, 62, 0.10);
+    border: 1px solid rgba(255, 178, 62, 0.3);
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #ffd99a;
+    margin-bottom: 15px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🔑 Admin Recovery Tool</h1>
+
+  <div class="section">
+    <h2>1. Set Admin Username</h2>
+    <div class="info-box">Enter your desired admin username.</div>
+    <label>Admin Username:</label>
+    <input id="adminUser" placeholder="e.g., matrosbogdan6" type="text">
+    <button onclick="setAdmin()">Set as Admin</button>
+    <div id="adminResult" class="result"></div>
+  </div>
+
+  <div class="section">
+    <h2>2. Create Admin Account</h2>
+    <div class="info-box">Create a login account with admin privileges.</div>
+    <label>Username:</label>
+    <input id="createUser" placeholder="username" type="text">
+    <label>Password:</label>
+    <input id="createPass" placeholder="password" type="password">
+    <label>Display Name:</label>
+    <input id="createName" placeholder="Your Name" type="text">
+    <button onclick="createAdminAccount()">Create Admin Account</button>
+    <div id="createResult" class="result"></div>
+  </div>
+
+  <div class="section">
+    <h2>3. Update User Prediction</h2>
+    <div class="info-box">Change a user's prediction for any match.</div>
+    <label>Username:</label>
+    <input id="updateUser" placeholder="e.g., bogdanmt66" type="text">
+    <label>Match ID:</label>
+    <input id="matchId" placeholder="e.g., m31" type="text">
+    <label>Home Score:</label>
+    <input id="homeScore" placeholder="0" type="number" min="0" max="99">
+    <label>Away Score:</label>
+    <input id="awayScore" placeholder="0" type="number" min="0" max="99">
+    <button onclick="updatePrediction()">Update Prediction</button>
+    <div id="updateResult" class="result"></div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/12.14.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAQg7Y-9GHXXdXU91w4SgEKYjyJlzpHQlY",
+  authDomain: "fotbal-4d150.firebaseapp.com",
+  projectId: "fotbal-4d150",
+  storageBucket: "fotbal-4d150.firebasestorage.app",
+  messagingSenderId: "498970433293",
+  appId: "1:498970433293:web:a771e19fb5b30eb224c244"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+function showResult(elementId, message, isSuccess) {
+  const resultDiv = document.getElementById(elementId);
+  resultDiv.textContent = message;
+  resultDiv.className = 'result show ' + (isSuccess ? 'success' : 'error');
+}
+
+async function sha(txt) {
+  if (window.crypto && window.crypto.subtle) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+  let h = 0;
+  for (let i = 0; i < txt.length; i++) {
+    h = (h << 5) - h + txt.charCodeAt(i);
+    h |= 0;
+  }
+  return "x" + h;
+}
+
+async function setAdmin() {
+  const adminUser = document.getElementById('adminUser').value.trim().toLowerCase();
+  if (!adminUser) {
+    showResult('adminResult', 'Please enter a username', false);
+    return;
+  }
+  try {
+    await db.collection('app').doc('meta').set({ admin: adminUser });
+    showResult('adminResult', `✓ ${adminUser} is now the admin!`, true);
+  } catch (e) {
+    showResult('adminResult', `Error: ${e.message}`, false);
+  }
+}
+
+async function createAdminAccount() {
+  const user = document.getElementById('createUser').value.trim().toLowerCase();
+  const pass = document.getElementById('createPass').value;
+  const name = document.getElementById('createName').value.trim();
+
+  if (!user || !pass || !name) {
+    showResult('createResult', 'Please fill in all fields', false);
+    return;
+  }
+  if (pass.length < 3) {
+    showResult('createResult', 'Password must be at least 3 characters', false);
+    return;
+  }
+
+  try {
+    const existing = await db.collection('users').doc(user).get();
+    if (existing.exists) {
+      showResult('createResult', 'Username already exists', false);
+      return;
+    }
+
+    const ph = await sha(pass);
+    await db.collection('users').doc(user).set({
+      name: name,
+      pass: ph,
+      joined: Date.now()
+    });
+
+    await db.collection('app').doc('meta').set({ admin: user });
+    showResult('createResult', `✓ Admin account created for ${name}!`, true);
+  } catch (e) {
+    showResult('createResult', `Error: ${e.message}`, false);
+  }
+}
+
+async function updatePrediction() {
+  const user = document.getElementById('updateUser').value.trim().toLowerCase();
+  const matchId = document.getElementById('matchId').value.trim();
+  const homeScore = parseInt(document.getElementById('homeScore').value);
+  const awayScore = parseInt(document.getElementById('awayScore').value);
+
+  if (!user || !matchId || isNaN(homeScore) || isNaN(awayScore)) {
+    showResult('updateResult', 'Please fill in all fields correctly', false);
+    return;
+  }
+
+  try {
+    const userPredRef = db.collection('preds').doc(user);
+    const userPredData = (await userPredRef.get()).data() || {};
+
+    userPredData[matchId] = {
+      h: homeScore,
+      a: awayScore,
+      ts: Date.now()
+    };
+
+    await userPredRef.set(userPredData);
+    showResult('updateResult', `✓ Updated ${user}'s prediction: ${homeScore}-${awayScore}`, true);
+  } catch (e) {
+    showResult('updateResult', `Error: ${e.message}`, false);
+  }
+}
+</script>
+</body>
+</html>
